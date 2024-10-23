@@ -1,0 +1,3908 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : " Apiable Platform API",
+    "description" : "",
+    "contact" : {
+      "name" : "Apiable Team",
+      "url" : "https://apiable.io"
+    },
+    "version" : "v2"
+  },
+  "servers" : [ {
+    "url" : "https://convera-staging.api.apiable.io"
+  } ],
+  "tags" : [ {
+    "name" : "Plans",
+    "description" : "Plans are a way to group APIs and their documentation."
+  }, {
+    "name" : "Files",
+    "description" : "Files are a way to store files in the system."
+  }, {
+    "name" : "Teams",
+    "description" : "Teams are a way to group users together. Teams are used to manage team-based access to subscriptions on the platform with internal roles and permissions. Teams typically consist of one to a handful of users."
+  }, {
+    "name" : "Docs",
+    "description" : "Docs are a way to store documentation in the system."
+  }, {
+    "name" : "Products",
+    "description" : "Products are a high-level abstraction of your API products, they are used to group plans together and to provide a high level overview of the product."
+  }, {
+    "name" : "Webhooks",
+    "description" : ""
+  }, {
+    "name" : "Serverinfo",
+    "description" : "Serverinfo is a way to get information about the server."
+  }, {
+    "name" : "Invitations",
+    "description" : "Invitations are a way to invite new users to join the platform and team of the inviter. Invitations are typically sent by team members to new users, and can be accepted or ignored by the invitee."
+  }, {
+    "name" : "Custom Properties",
+    "description" : "Custom properties are additional fields that can be used to store extra information about the subscription."
+  }, {
+    "name" : "Companies",
+    "description" : "Companies, similar to teams are a way to group users together. Companies are a way to manage multiple teams and users together. An example being a company that has teams for different departments, such as backend and frontend development teams.Multiple teams can be part of the same company, and unlike teams, companies do not have roles and permissions, nor are subscriptions shared between different teams under the same company."
+  }, {
+    "name" : "Users",
+    "description" : "Users are the people who use the platform. Users can be invited to join the platform by an admin or they can sign up themselves. Users can be assigned to teams and have roles and permissions within those teams. Each user has the possibility to be part of one or more teams, each with their separate roles, permissions and subscriptions."
+  }, {
+    "name" : "Subscriptions",
+    "description" : "Operations related to managing subscriptions, including retrieval, update, approval, rejection, and refreshing the status of connected monetization. For security reasons, API keys, secrets, and other sensitive information included in the subscriptions are not returned in the response."
+  } ],
+  "paths" : {
+    "/api/webhooks/{id}" : {
+      "get" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Retrieve a webhook by ID",
+        "description" : "Retrieve a specific webhook by its ID",
+        "operationId" : "retrieveById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The ID of the webhook to retrieve",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WebhookConf"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Update webhook",
+        "description" : "Update a webhook",
+        "operationId" : "update",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/WebhookConfUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WebhookConf"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Unregister a webhook",
+        "description" : "Unsubscribe from a webhook",
+        "operationId" : "unsubscribe",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/webhooks" : {
+      "get" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Retrieve Registered Webhooks",
+        "operationId" : "retrieve",
+        "parameters" : [ {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/WebhookConf"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Register a webhook",
+        "description" : "Subscribe to a webhook",
+        "operationId" : "create",
+        "parameters" : [ {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/WebhookConfCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WebhookConf"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}/docs" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the plan-level docs of the plan specified by the plan id",
+        "description" : "This endpoint will return the plan-level docs of the specified plan",
+        "operationId" : "getDocsOfPlanById_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of plan-leve documentation for the specified plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DocumentationVersion"
+                  }
+                },
+                "example" : [ {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                } ]
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Create the plan-level doc to the plan",
+        "description" : "This endpoint will create the plan-level doc of the specified plan",
+        "operationId" : "createDocByPlanIntegrationId_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DocumentationVersion"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The created documentation for the specified plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                },
+                "example" : {
+                  "id" : "66f172d43ee464553f9fe898",
+                  "order" : 0,
+                  "version" : "1.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazingDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "synced" : "2024-09-23T13:58:22.665"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}/apis/{integrationId}/docs" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the api-level docs of all apis specified by the API integrationId in the plan",
+        "description" : "This endpoint will return the api-level docs of the specified api in the plan",
+        "operationId" : "getDocsOfApiByIntegrationIdAndPlanId_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of api-level documentation for the specified APIs in the plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DocumentationVersion"
+                  }
+                },
+                "example" : [ {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                } ]
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Create the api-level doc to all apis specified by the API integrationId in the plan",
+        "description" : "This endpoint will create the api-level doc of the specified api in the plan",
+        "operationId" : "createDocByPlanIdAndApiIntegrationId_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DocumentationVersion"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The created documentation for the specified APIs in the plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlanDocDetails"
+                },
+                "example" : {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/apis/{integrationId}/docs" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the api-level docs of all apis specified by the API integrationId of all plans",
+        "description" : "This endpoint will return the api-level docs of the specified api across all plans",
+        "operationId" : "getDocsOfApiByIntegrationId_1",
+        "parameters" : [ {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of api-level documentation for the specified APIs across all plans",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DocumentationVersion"
+                  }
+                },
+                "example" : [ {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                } ]
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Create the api-level doc to all apis specified by the API integrationId",
+        "description" : "This endpoint will create the api-level doc of the specified api across all plans",
+        "operationId" : "createDocByApiIntegrationId_1",
+        "parameters" : [ {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DocumentationVersion"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The created documentation for the specified APIs across all plans",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DocumentationVersion"
+                  }
+                },
+                "example" : [ {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                } ]
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/files/upload" : {
+      "post" : {
+        "tags" : [ "Files" ],
+        "summary" : "Upload a file",
+        "description" : "Expecting the request to be a multipart/form-data",
+        "operationId" : "uploadFile",
+        "parameters" : [ {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary",
+                    "description" : "The upload file"
+                  }
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Returns the url of the uploaded file",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UploadFileResponse"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/subscriptions/{subscriptionId}/custom-properties/{customPropertyId}" : {
+      "get" : {
+        "tags" : [ "Custom Properties" ],
+        "summary" : "Get the custom property by id for the subscription",
+        "operationId" : "getCustomPropertyForSubscription",
+        "parameters" : [ {
+          "name" : "subscriptionId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "customPropertyId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Custom Properties" ],
+        "summary" : "Update the custom property by id for the subscription",
+        "operationId" : "updateCustomPropertyForSubscription",
+        "parameters" : [ {
+          "name" : "subscriptionId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "customPropertyId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "description" : "The patch body",
+                "items" : {
+                  "$ref" : "#/components/schemas/PatchObject"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/subscriptions/custom-properties/{customPropertyId}" : {
+      "patch" : {
+        "tags" : [ "Custom Properties" ],
+        "summary" : "Update the custom property by id for the subscription",
+        "operationId" : "updateCustomPropertyForAllSubscription",
+        "parameters" : [ {
+          "name" : "customPropertyId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "description" : "The patch body",
+                "items" : {
+                  "$ref" : "#/components/schemas/PatchObject"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}/docs/{docId}" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the plan-level doc of the plan specified by the plan id",
+        "description" : "This endpoint will return the plan-level doc of the specified plan",
+        "operationId" : "getDocOfPlanById_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The specified plan-level documentation for the specified plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                },
+                "example" : {
+                  "id" : "66f172d43ee464553f9fe898",
+                  "order" : 0,
+                  "version" : "1.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazingDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "synced" : "2024-09-23T13:58:22.665"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Delete a plan level documentation from a plan",
+        "description" : "This endpoint will delete a plan-level documentation entry from the specified plan. The documentation entry is identified by the given ID. The response includes the details of the deleted documentation entry.",
+        "operationId" : "deleteDocumentationById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deleted documentation entry.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlanDocDetails"
+                },
+                "examples" : {
+                  "Example response" : {
+                    "description" : "The returned value contains the details of the deleted documentation entry.",
+                    "value" : {
+                      "id" : "66f172d43ee464553f9fe898",
+                      "order" : 0,
+                      "version" : "1.0",
+                      "status" : [ ],
+                      "active" : true,
+                      "visible" : true,
+                      "retrievalType" : "GATEWAY",
+                      "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazingDocumentation.json",
+                      "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                      "synced" : "2024-09-23T13:58:22.665"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Patch the plan-level doc",
+        "description" : "The supported operation is replace, and the supported paths are url, version, name",
+        "operationId" : "patchDocByPlanId_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "description" : "The patch body",
+                "items" : {
+                  "$ref" : "#/components/schemas/PatchObject"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The updated documentation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                },
+                "example" : {
+                  "id" : "66f172d43ee464553f9fe898",
+                  "order" : 0,
+                  "version" : "1.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazingDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "synced" : "2024-09-23T13:58:22.665"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}/apis/{integrationId}/docs/{docId}" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the api-level doc of all apis specified by the API integrationId",
+        "description" : "This endpoint will return the api-level doc of the specified api in the plan",
+        "operationId" : "getDocOfApiByIntegrationIdAndPlanId_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The specified documentation for the specified APIs in the plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                },
+                "example" : {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Delete an api level documentation from a plan",
+        "description" : "This endpoint will delete an api-level documentation entry from the specified plan and api. The documentation entry is identified by the given ID. The response includes the details of the deleted documentation entry.",
+        "operationId" : "deleteApiLevelDocumentationById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "integrationId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The deleted documentation entry.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlanDocDetails"
+                },
+                "examples" : {
+                  "Example response" : {
+                    "description" : "The returned value contains the details of the deleted documentation entry.",
+                    "value" : {
+                      "id" : "66f3c2be7903d41208214a7d",
+                      "order" : 0,
+                      "version" : "2.0",
+                      "status" : [ ],
+                      "active" : true,
+                      "visible" : true,
+                      "retrievalType" : "GATEWAY",
+                      "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                      "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                      "planId" : "66f174095cc1da3963b9a1d7",
+                      "planDocLevel" : "PLAN",
+                      "apiIntegrationId" : "cl4z2nr4p8"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Patch the api-level doc",
+        "description" : "The supported operation is replace, and the supported paths are url, version, name",
+        "operationId" : "patchDocByPlanIdAndApiIntegrationId_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "description" : "The patch body",
+                "items" : {
+                  "$ref" : "#/components/schemas/PatchObject"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The updated documentation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/apis/{integrationId}/docs/{docId}" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the api-level doc of all apis specified by the API integrationId",
+        "description" : "This endpoint will return the api-level doc of the specified api across all plans",
+        "operationId" : "getDocOfApiByIntegrationId_1",
+        "parameters" : [ {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The specified documentation for the specified APIs across all plans",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                },
+                "example" : {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Delete an api level documentation from a plan",
+        "description" : "This endpoint will delete an api-level documentation entry from the specified plan and api. The documentation entry is identified by the given ID. The response includes the details of the deleted documentation entry.",
+        "operationId" : "deleteAPILevelDocumentationWithoutPlanId",
+        "parameters" : [ {
+          "name" : "docId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "integrationId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deleted documentation entry.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlanDocDetails"
+                },
+                "examples" : {
+                  "Example response" : {
+                    "description" : "The returned value contains the details of the deleted documentation entry.",
+                    "value" : {
+                      "id" : "66f3c2be7903d41208214a7d",
+                      "order" : 0,
+                      "version" : "2.0",
+                      "status" : [ ],
+                      "active" : true,
+                      "visible" : true,
+                      "retrievalType" : "GATEWAY",
+                      "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                      "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                      "planId" : "66f174095cc1da3963b9a1d7",
+                      "planDocLevel" : "PLAN",
+                      "apiIntegrationId" : "cl4z2nr4p8"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Patch the api-level doc",
+        "description" : "The supported operation is replace, and the supported paths are url, version, name",
+        "operationId" : "patchDocByApiIntegrationId_1",
+        "parameters" : [ {
+          "name" : "integrationId",
+          "in" : "path",
+          "description" : "The API integrationId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "description" : "The patch body",
+                "items" : {
+                  "$ref" : "#/components/schemas/PatchObject"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The updated documentation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                },
+                "example" : {
+                  "id" : "66f3c2be7903d41208214a7d",
+                  "order" : 0,
+                  "version" : "2.0",
+                  "status" : [ ],
+                  "active" : true,
+                  "visible" : true,
+                  "retrievalType" : "GATEWAY",
+                  "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/amazonGatewayDocumentation.json",
+                  "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                  "planId" : "66f174095cc1da3963b9a1d7",
+                  "planDocLevel" : "PLAN",
+                  "apiIntegrationId" : "cl4z2nr4p8"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/docs/{docId}" : {
+      "get" : {
+        "tags" : [ "Docs" ],
+        "summary" : "Get the doc by id",
+        "operationId" : "findById_3",
+        "parameters" : [ {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Docs" ],
+        "summary" : "Update the doc",
+        "description" : "The supported operation is replace, and the supported paths are url, version, name",
+        "operationId" : "patchById",
+        "parameters" : [ {
+          "name" : "docId",
+          "in" : "path",
+          "description" : "The documentation id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "description" : "The patch body",
+                "items" : {
+                  "$ref" : "#/components/schemas/PatchObject"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocumentationVersion"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/webhooks/{id}/test" : {
+      "get" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Test a webhook by ID",
+        "description" : "Send a test event to a specific webhook by its ID",
+        "operationId" : "testWebhookById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The ID of the webhook to test",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/webhooks/{id}/history" : {
+      "get" : {
+        "tags" : [ "Webhooks" ],
+        "summary" : "Retrieve the history of webhook results for the past 24 hours",
+        "description" : "Retrieve the history of webhook results for the past 24 hours",
+        "operationId" : "getPastWebhookHistory",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/versions" : {
+      "get" : {
+        "tags" : [ "Serverinfo" ],
+        "summary" : "Get versions of the API",
+        "operationId" : "versions",
+        "parameters" : [ {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/subscriptions/{subscriptionId}/custom-properties" : {
+      "get" : {
+        "tags" : [ "Custom Properties" ],
+        "summary" : "Get the custom properties for the subscription",
+        "operationId" : "getCustomPropertiesForSubscription",
+        "parameters" : [ {
+          "name" : "subscriptionId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    },
+    "/api/plans" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "List all plans",
+        "description" : "Get a list of all plans that exist on the portal. Each plan includes detailed information such as the plan ID, name, description, and associated APIs.",
+        "operationId" : "findAll_4",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Page number",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "example" : 1
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "Number of items per page",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "example" : 10
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort order",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "example" : "name,asc"
+        }, {
+          "name" : "resolve",
+          "in" : "query",
+          "description" : "Fields to resolve",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "example" : "apis"
+        }, {
+          "name" : "search",
+          "in" : "query",
+          "description" : "Search criteria",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "examples" : {
+            "Search by product" : {
+              "description" : "Search by product",
+              "value" : "product.id.match=60950a160d4e8b26d3803d40"
+            },
+            "Search by name" : {
+              "description" : "Search by name",
+              "value" : "name.like=example"
+            }
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Lists all plans that exist on the portal",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Plan"
+                  }
+                },
+                "examples" : {
+                  "Example response with multiple plans" : {
+                    "summary" : "Listing all plans that belong fit a search criteria",
+                    "description" : "Example output listing all plans that exist on the portal that fit a search criteria.",
+                    "value" : {
+                      "content" : [ {
+                        "id" : "66f174095cc1da3963b9a1d7",
+                        "created" : "2024-09-23T16:58:33.962",
+                        "updated" : "2024-09-23T16:59:11.984",
+                        "name" : "Example Plan",
+                        "order" : 2,
+                        "status" : "ACTIVE",
+                        "product" : {
+                          "id" : "66e803e91afc532cbde31cd1"
+                        },
+                        "apis" : [ {
+                          "type" : "AMAZON",
+                          "name" : "Jokes (Cognito) - prod",
+                          "url" : "https://cl4z2nr4p8.execute-api.eu-central-1.amazonaws.com/prod",
+                          "integrationId" : "cl4z2nr4p8",
+                          "serviceIntegrationId" : "cl4z2nr4p8",
+                          "resources" : [ {
+                            "path" : "/programming",
+                            "method" : "GET",
+                            "integrationId" : "pb1jqo"
+                          } ],
+                          "stage" : "prod",
+                          "environmentId" : "w7rc9s",
+                          "compatibleWithGatewayAuthz" : true
+                        } ],
+                        "gateway" : {
+                          "id" : "63527499bad1d32643c4f875"
+                        },
+                        "integrationId" : "inbwnw",
+                        "description" : "Acquire test data, easily, fast, and safely!",
+                        "monetization" : {
+                          "unitLabel" : "call",
+                          "cycle" : "MONTH",
+                          "revenueModel" : "FLAT_FEE",
+                          "prices" : [ {
+                            "amount" : 10.0,
+                            "currency" : "EUR",
+                            "integrationId" : "price_1Q2CnF4C6YYiB1TPwz8oA5wZ",
+                            "active" : true,
+                            "default" : false,
+                            "tiers" : [ {
+                              "min" : 1.0,
+                              "max" : 100.0,
+                              "perCall" : 0.0,
+                              "flatFee" : 2.0
+                            }, {
+                              "min" : 101.0,
+                              "max" : -1.0,
+                              "perCall" : 0.0,
+                              "flatFee" : 1.0
+                            } ],
+                            "lookupKey" : "Example",
+                            "labelOverrides" : {
+                              "leadingText" : "",
+                              "mainText" : "",
+                              "trailingText" : "",
+                              "detailsTitle" : "",
+                              "detailsText" : "",
+                              "ctaOverrideText" : "",
+                              "ctaOverrideUrl" : ""
+                            }
+                          } ],
+                          "defined" : false
+                        },
+                        "rateLimit" : {
+                          "type" : "AMAZON",
+                          "quoteLimit" : 2147483647,
+                          "quotePeriod" : "MONTH",
+                          "throttleBurstLimit" : 2147483647,
+                          "throttleRateLimit" : 2.147483647E9
+                        },
+                        "documentationLevel" : "PLAN",
+                        "documentationPublic" : true,
+                        "documentations" : [ {
+                          "id" : "66f172d43ee464553f9fe898",
+                          "order" : 0,
+                          "version" : "1.0",
+                          "status" : [ ],
+                          "active" : true,
+                          "visible" : true,
+                          "retrievalType" : "GATEWAY",
+                          "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/icannotbelieveitisdocumentation.json",
+                          "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                          "synced" : "2024-09-23T13:58:22.665"
+                        } ],
+                        "securityLevel" : "INTERMEDIATE_CLIENT_CREDENTIAL",
+                        "enableUsageEvents" : false,
+                        "propertiesTabName" : "Properties",
+                        "customProperties" : [ ],
+                        "version" : 3
+                      } ],
+                      "pageable" : {
+                        "pageNumber" : 0,
+                        "pageSize" : 10,
+                        "sort" : {
+                          "empty" : false,
+                          "unsorted" : false,
+                          "sorted" : true
+                        },
+                        "offset" : 0,
+                        "paged" : true,
+                        "unpaged" : false
+                      },
+                      "last" : true,
+                      "totalElements" : 1,
+                      "totalPages" : 1,
+                      "size" : 10,
+                      "number" : 0,
+                      "sort" : {
+                        "empty" : false,
+                        "unsorted" : false,
+                        "sorted" : true
+                      },
+                      "first" : true,
+                      "numberOfElements" : 1,
+                      "empty" : false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the plan by the plan id",
+        "description" : "This endpoint will return the plan details if the user has the authority to view the plan",
+        "operationId" : "findById_2_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Plan ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "66f174095cc1da3963b9a1d7"
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest", "2023-01-01" ]
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "The plan was not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundException"
+                },
+                "example" : {
+                  "timestamp" : "2024-10-02T11:15:31.753+00:00",
+                  "status" : 404,
+                  "error" : "Not Found",
+                  "message" : "Could not find plan with id 63cf8aebe3bbaf3214f6a9c8. Check that the ID is correct and that you intended to retrieve a Plan object.",
+                  "path" : "/api/plans/63cf8aebe3bbaf3214f6a9c8"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The details about the documentation on this plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "$ref" : "#/components/schemas/PlanDocDetails"
+                  }, {
+                    "$ref" : "#/components/schemas/Plan"
+                  } ]
+                },
+                "examples" : {
+                  "Api version 2" : {
+                    "summary" : "Example Plan V3",
+                    "description" : "Example Plan V3",
+                    "value" : {
+                      "id" : "66f174095cc1da3963b9a1d7",
+                      "created" : "2024-09-23T16:58:33.962",
+                      "updated" : "2024-09-23T16:59:11.984",
+                      "name" : "Example Plan",
+                      "order" : 2,
+                      "status" : "ACTIVE",
+                      "product" : {
+                        "id" : "66e803e91afc532cbde31cd1"
+                      },
+                      "apis" : [ {
+                        "type" : "AMAZON",
+                        "name" : "Jokes (Cognito) - prod",
+                        "url" : "https://cl4z2nr4p8.execute-api.eu-central-1.amazonaws.com/prod",
+                        "integrationId" : "cl4z2nr4p8",
+                        "serviceIntegrationId" : "cl4z2nr4p8",
+                        "resources" : [ {
+                          "path" : "/programming",
+                          "method" : "GET",
+                          "integrationId" : "pb1jqo"
+                        } ],
+                        "stage" : "prod",
+                        "environmentId" : "w7rc9s",
+                        "compatibleWithGatewayAuthz" : true
+                      } ],
+                      "gateway" : {
+                        "id" : "63527499bad1d32643c4f875"
+                      },
+                      "integrationId" : "inbwnw",
+                      "description" : "Acquire test data, easily, fast, and safely!",
+                      "monetization" : {
+                        "unitLabel" : "call",
+                        "cycle" : "MONTH",
+                        "revenueModel" : "FLAT_FEE",
+                        "prices" : [ {
+                          "amount" : 10.0,
+                          "currency" : "EUR",
+                          "integrationId" : "price_1Q2CnF4C6YYiB1TPwz8oA5wZ",
+                          "active" : true,
+                          "default" : false,
+                          "tiers" : [ {
+                            "min" : 1.0,
+                            "max" : 100.0,
+                            "perCall" : 0.0,
+                            "flatFee" : 2.0
+                          }, {
+                            "min" : 101.0,
+                            "max" : -1.0,
+                            "perCall" : 0.0,
+                            "flatFee" : 1.0
+                          } ],
+                          "lookupKey" : "Example",
+                          "labelOverrides" : {
+                            "leadingText" : "",
+                            "mainText" : "",
+                            "trailingText" : "",
+                            "detailsTitle" : "",
+                            "detailsText" : "",
+                            "ctaOverrideText" : "",
+                            "ctaOverrideUrl" : ""
+                          }
+                        } ],
+                        "defined" : false
+                      },
+                      "rateLimit" : {
+                        "type" : "AMAZON",
+                        "quoteLimit" : 2147483647,
+                        "quotePeriod" : "MONTH",
+                        "throttleBurstLimit" : 2147483647,
+                        "throttleRateLimit" : 2.147483647E9
+                      },
+                      "documentationLevel" : "PLAN",
+                      "documentationPublic" : true,
+                      "documentations" : [ {
+                        "id" : "66f172d43ee464553f9fe898",
+                        "order" : 0,
+                        "version" : "1.0",
+                        "status" : [ ],
+                        "active" : true,
+                        "visible" : true,
+                        "retrievalType" : "GATEWAY",
+                        "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/icannotbelieveitisdocumentation.json",
+                        "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                        "synced" : "2024-09-23T13:58:22.665"
+                      } ],
+                      "securityLevel" : "INTERMEDIATE_CLIENT_CREDENTIAL",
+                      "enableUsageEvents" : false,
+                      "propertiesTabName" : "Properties",
+                      "customProperties" : [ ],
+                      "version" : 3
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}/resources" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Read list of API resources for a plan by plan ID",
+        "description" : "Returns a list of API resources that belong to the specified plan. Each resource includes detailed information such as the resource ID, name, description, and associated APIs.",
+        "operationId" : "readResources",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Lists all resources that belong to the specified plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Plan"
+                  }
+                },
+                "examples" : {
+                  "Resources" : {
+                    "summary" : "API Resources for plan",
+                    "description" : "Example resources for a plan",
+                    "value" : "\n{\n  \"id\": \"66f174095cc1da3963b9a1d7\",\n  \"documentationLevel\": \"PLAN\",\n  \"documentationPublic\": true,\n  \"planLevelDocs\": [\n    {\n      \"id\": \"66f172d43ee464553f9fe898\",\n      \"order\": 0,\n      \"version\": \"1.0\",\n      \"status\": [],\n      \"active\": true,\n      \"visible\": true,\n      \"retrievalType\": \"GATEWAY\",\n      \"url\": \"https://apiable.s3.eu-central-1.amazonaws.com/public/dev/myfirstdocumentation.json\",\n      \"name\": \"Jokes (Cognito) - prod-202481-v-1.0.json\",\n      \"synced\": \"2024-09-23T13:58:22.665\"\n    },\n    {\n      \"id\": \"66f2a51f92b36f09825a4e30\",\n      \"order\": 1,\n      \"version\": \"1.0\",\n      \"status\": [],\n      \"active\": true,\n      \"visible\": true,\n      \"retrievalType\": \"GATEWAY\",\n      \"url\": \"https://apiable.s3.eu-central-1.amazonaws.com/public/dev/myseconddocumentation.json\",\n      \"name\": \"Jokes (Cognito) - prod-202481-v-1.0.json\"\n    },\n  ],\n  \"apiLevelDocs\": [\n    {\n      \"id\": \"66f3c2be7903d41208214a7d\",\n      \"order\": 0,\n      \"version\": \"2.0\",\n      \"status\": [],\n      \"active\": true,\n      \"visible\": true,\n      \"retrievalType\": \"GATEWAY\",\n      \"url\": \"https://apiable.s3.eu-central-1.amazonaws.com/public/dev/mythirddocumentation.json\",\n      \"name\": \"Jokes (Cognito) - prod-202481-v-1.0.json\",\n      \"planId\": \"66f174095cc1da3963b9a1d7\",\n      \"planDocLevel\": \"PLAN\",\n      \"apiIntegrationId\": \"cl4z2nr4p8\"\n    }\n  ]\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/{id}/docs/overview" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get the plan documentation by the plan id",
+        "description" : "Returns all documentation objects that exist on the plan. The returned overview includes both plan level and API level documentation.",
+        "operationId" : "getById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The plan id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The details about the documentation on this plan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/PlanDocDetails"
+                  }
+                },
+                "examples" : {
+                  "Example response" : {
+                    "description" : "Example output listing all documentation objects that exist on the plan.",
+                    "value" : "\n{\n  \"id\": \"66f174095cc1da3963b9a1d7\",\n  \"documentationLevel\": \"PLAN\",\n  \"documentationPublic\": true,\n  \"planLevelDocs\": [\n    {\n      \"id\": \"66f172d43ee464553f9fe898\",\n      \"order\": 0,\n      \"version\": \"1.0\",\n      \"status\": [],\n      \"active\": true,\n      \"visible\": true,\n      \"retrievalType\": \"GATEWAY\",\n      \"url\": \"https://apiable.s3.eu-central-1.amazonaws.com/public/dev/myfirstdocumentation.json\",\n      \"name\": \"Jokes (Cognito) - prod-202481-v-1.0.json\",\n      \"synced\": \"2024-09-23T13:58:22.665\"\n    },\n    {\n      \"id\": \"66f2a51f92b36f09825a4e30\",\n      \"order\": 1,\n      \"version\": \"1.0\",\n      \"status\": [],\n      \"active\": true,\n      \"visible\": true,\n      \"retrievalType\": \"GATEWAY\",\n      \"url\": \"https://apiable.s3.eu-central-1.amazonaws.com/public/dev/myseconddocumentation.json\",\n      \"name\": \"Jokes (Cognito) - prod-202481-v-1.0.json\"\n    },\n  ],\n  \"apiLevelDocs\": [\n    {\n      \"id\": \"66f3c2be7903d41208214a7d\",\n      \"order\": 0,\n      \"version\": \"2.0\",\n      \"status\": [],\n      \"active\": true,\n      \"visible\": true,\n      \"retrievalType\": \"GATEWAY\",\n      \"url\": \"https://apiable.s3.eu-central-1.amazonaws.com/public/dev/mythirddocumentation.json\",\n      \"name\": \"Jokes (Cognito) - prod-202481-v-1.0.json\",\n      \"planId\": \"66f174095cc1da3963b9a1d7\",\n      \"planDocLevel\": \"PLAN\",\n      \"apiIntegrationId\": \"cl4z2nr4p8\"\n    }\n  ]\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/plans/product/{productId}" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Get list of plans of a product",
+        "description" : "Get a list of all plans that belong to a specified product. Each plan includes detailed information such as the plan ID, name, description, and associated APIs. The results of this endpoint are identical to the results of the /api/plans endpoint when using search query `product.id.match={id}` with the difference that the results from this endpoint are not paginated.",
+        "operationId" : "findByProductId",
+        "parameters" : [ {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "Product ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "60950a160d4e8b26d3803d40"
+        }, {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Lists all plans that belong to the specified product",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Plan"
+                },
+                "examples" : {
+                  "Example response with multiple plans that belong to the same product" : {
+                    "summary" : "Listing all plans that belong to a specified product in the portal",
+                    "description" : "Example output listing all plans that belong to a specified product on the portal.",
+                    "value" : {
+                      "content" : [ {
+                        "id" : "66f174095cc1da3963b9a1d7",
+                        "created" : "2024-09-23T16:58:33.962",
+                        "updated" : "2024-09-23T16:59:11.984",
+                        "name" : "Example Plan",
+                        "order" : 2,
+                        "status" : "ACTIVE",
+                        "product" : {
+                          "id" : "66e803e91afc532cbde31cd1"
+                        },
+                        "apis" : [ {
+                          "type" : "AMAZON",
+                          "name" : "Jokes (Cognito) - prod",
+                          "url" : "https://cl4z2nr4p8.execute-api.eu-central-1.amazonaws.com/prod",
+                          "integrationId" : "cl4z2nr4p8",
+                          "serviceIntegrationId" : "cl4z2nr4p8",
+                          "resources" : [ {
+                            "path" : "/programming",
+                            "method" : "GET",
+                            "integrationId" : "pb1jqo"
+                          } ],
+                          "stage" : "prod",
+                          "environmentId" : "w7rc9s",
+                          "compatibleWithGatewayAuthz" : true
+                        } ],
+                        "gateway" : {
+                          "id" : "63527499bad1d32643c4f875"
+                        },
+                        "integrationId" : "inbwnw",
+                        "description" : "Acquire test data, easily, fast, and safely!",
+                        "monetization" : {
+                          "unitLabel" : "call",
+                          "cycle" : "MONTH",
+                          "revenueModel" : "FLAT_FEE",
+                          "prices" : [ {
+                            "amount" : 10.0,
+                            "currency" : "EUR",
+                            "integrationId" : "price_1Q2CnF4C6YYiB1TPwz8oA5wZ",
+                            "active" : true,
+                            "default" : false,
+                            "tiers" : [ {
+                              "min" : 1.0,
+                              "max" : 100.0,
+                              "perCall" : 0.0,
+                              "flatFee" : 2.0
+                            }, {
+                              "min" : 101.0,
+                              "max" : -1.0,
+                              "perCall" : 0.0,
+                              "flatFee" : 1.0
+                            } ],
+                            "lookupKey" : "Example",
+                            "labelOverrides" : {
+                              "leadingText" : "",
+                              "mainText" : "",
+                              "trailingText" : "",
+                              "detailsTitle" : "",
+                              "detailsText" : "",
+                              "ctaOverrideText" : "",
+                              "ctaOverrideUrl" : ""
+                            }
+                          } ],
+                          "defined" : false
+                        },
+                        "rateLimit" : {
+                          "type" : "AMAZON",
+                          "quoteLimit" : 2147483647,
+                          "quotePeriod" : "MONTH",
+                          "throttleBurstLimit" : 2147483647,
+                          "throttleRateLimit" : 2.147483647E9
+                        },
+                        "documentationLevel" : "PLAN",
+                        "documentationPublic" : true,
+                        "documentations" : [ {
+                          "id" : "66f172d43ee464553f9fe898",
+                          "order" : 0,
+                          "version" : "1.0",
+                          "status" : [ ],
+                          "active" : true,
+                          "visible" : true,
+                          "retrievalType" : "GATEWAY",
+                          "url" : "https://apiable.s3.eu-central-1.amazonaws.com/public/dev/icannotbelieveitisdocumentation.json",
+                          "name" : "Jokes (Cognito) - prod-202481-v-1.0.json",
+                          "synced" : "2024-09-23T13:58:22.665"
+                        } ],
+                        "securityLevel" : "INTERMEDIATE_CLIENT_CREDENTIAL",
+                        "enableUsageEvents" : false,
+                        "propertiesTabName" : "Properties",
+                        "customProperties" : [ ],
+                        "version" : 3
+                      } ],
+                      "pageable" : {
+                        "pageNumber" : 0,
+                        "pageSize" : 10,
+                        "sort" : {
+                          "empty" : false,
+                          "unsorted" : false,
+                          "sorted" : true
+                        },
+                        "offset" : 0,
+                        "paged" : true,
+                        "unpaged" : false
+                      },
+                      "last" : true,
+                      "totalElements" : 1,
+                      "totalPages" : 1,
+                      "size" : 10,
+                      "number" : 0,
+                      "sort" : {
+                        "empty" : false,
+                        "unsorted" : false,
+                        "sorted" : true
+                      },
+                      "first" : true,
+                      "numberOfElements" : 1,
+                      "empty" : false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/platform", "apiable/cicd" ]
+        } ]
+      }
+    },
+    "/api/health" : {
+      "get" : {
+        "tags" : [ "Serverinfo" ],
+        "summary" : "Get health of the server",
+        "operationId" : "health",
+        "parameters" : [ {
+          "name" : "X-API-Version",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "latest" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "oauth-cc" : [ "apiable/cicd", "apiable/platform" ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "WebhookConfUpdate" : {
+        "description" : "The webhook subscription",
+        "properties" : {
+          "events" : {
+            "type" : "array",
+            "description" : "The events to subscribe to",
+            "items" : {
+              "type" : "string",
+              "description" : "The events to subscribe to",
+              "enum" : [ "SUBSCRIPTION_CREATED", "SUBSCRIPTION_CANCELLED" ]
+            }
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to send the webhook to"
+          },
+          "whsec" : {
+            "type" : "string",
+            "description" : "The webhook secret key"
+          },
+          "authorization" : {
+            "type" : "string",
+            "description" : "The authorization header"
+          },
+          "headers" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "description" : "The headers to send with the webhook"
+            },
+            "description" : "The headers to send with the webhook"
+          }
+        }
+      },
+      "WebhookConf" : {
+        "properties" : {
+          "id" : {
+            "type" : "object"
+          },
+          "events" : {
+            "type" : "array",
+            "description" : "The events the webhook is listening to",
+            "items" : {
+              "type" : "string",
+              "description" : "The events the webhook is listening to",
+              "enum" : [ "SUBSCRIPTION_CREATED", "SUBSCRIPTION_CANCELLED" ]
+            }
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The url of the webhook"
+          },
+          "whsec" : {
+            "type" : "string",
+            "description" : "The secret of the webhook"
+          },
+          "authorization" : {
+            "type" : "string",
+            "description" : "The authorization header of the webhook"
+          },
+          "headers" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "description" : "The headers of the webhook"
+            },
+            "description" : "The headers of the webhook"
+          }
+        }
+      },
+      "TeamRole" : {
+        "description" : "The role and permissions that a user has in a team",
+        "properties" : {
+          "teamId" : {
+            "type" : "object"
+          },
+          "accessDetails" : {
+            "$ref" : "#/components/schemas/UserAccessDetails"
+          }
+        }
+      },
+      "UserAccessDetails" : {
+        "description" : "Access details and role that the invited user will have",
+        "properties" : {
+          "roleName" : {
+            "type" : "string",
+            "enum" : [ "ADMIN", "READ_ONLY", "RESTRICTED" ]
+          },
+          "apiKeys" : {
+            "type" : "string",
+            "enum" : [ "NONE", "READ", "FULL" ]
+          },
+          "billing" : {
+            "type" : "string",
+            "enum" : [ "NONE", "READ", "FULL" ]
+          },
+          "teams" : {
+            "type" : "string",
+            "enum" : [ "NONE", "READ", "FULL" ]
+          }
+        }
+      },
+      "IdentifiableObjectId" : {
+        "description" : "Unique identifier to an object",
+        "properties" : {
+          "id" : {
+            "type" : "object"
+          }
+        }
+      },
+      "User" : {
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "providerId" : {
+            "type" : "string",
+            "description" : "The provider id of the user"
+          },
+          "metadata" : {
+            "$ref" : "#/components/schemas/UserMetadata"
+          },
+          "givenName" : {
+            "type" : "string",
+            "description" : "The first or given name of the user"
+          },
+          "familyName" : {
+            "type" : "string",
+            "description" : "The last or family name of the user"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "The email of the user"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The full name of the user, read only, constructed from the given and family name"
+          },
+          "active" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if the user is active"
+          },
+          "company" : {
+            "type" : "string",
+            "description" : "Name of the company the user is part of, by default it is the domain of the email"
+          }
+        }
+      },
+      "UserMetadata" : {
+        "description" : "The metadata of the user",
+        "properties" : {
+          "activeTeam" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "agreesToReceiveEmail" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if the user has given consent to receive emails"
+          },
+          "postRegistrationWizardComplete" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if the user has completed the registration wizard"
+          },
+          "approval" : {
+            "type" : "string",
+            "description" : "Flag to indicate if the user has been approved, if approval process is in place",
+            "enum" : [ "PENDING", "ACTIVE", "REJECTED" ]
+          },
+          "teams" : {
+            "type" : "array",
+            "description" : "List of teams that the user is part of",
+            "items" : {
+              "$ref" : "#/components/schemas/IdentifiableObjectId"
+            }
+          },
+          "stripeCustomerId" : {
+            "type" : "string",
+            "description" : "The monetization integration ID of the user"
+          },
+          "registrationEmailSent" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if the user has been sent a registration email"
+          },
+          "teamRoles" : {
+            "type" : "array",
+            "description" : "List of roles that the user has in the teams that they are part of.",
+            "items" : {
+              "$ref" : "#/components/schemas/TeamRole"
+            }
+          },
+          "developer" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Team" : {
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the team"
+          },
+          "users" : {
+            "type" : "array",
+            "description" : "List of users in the team",
+            "items" : {
+              "$ref" : "#/components/schemas/IdentifiableObjectId"
+            }
+          },
+          "internal" : {
+            "type" : "boolean",
+            "description" : "The internal status of the team"
+          },
+          "company" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          }
+        }
+      },
+      "WebhookConfCreate" : {
+        "description" : "The webhook subscription",
+        "properties" : {
+          "events" : {
+            "type" : "array",
+            "description" : "The events to subscribe to",
+            "items" : {
+              "type" : "string",
+              "description" : "The events to subscribe to",
+              "enum" : [ "SUBSCRIPTION_CREATED", "SUBSCRIPTION_CANCELLED" ]
+            }
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to send the webhook to"
+          },
+          "whsec" : {
+            "type" : "string",
+            "description" : "The webhook secret key"
+          },
+          "authorization" : {
+            "type" : "string",
+            "description" : "The authorization header"
+          },
+          "headers" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "description" : "The headers to send with the webhook"
+            },
+            "description" : "The headers to send with the webhook"
+          }
+        }
+      },
+      "Auth" : {
+        "description" : "Authentication details for the subscription",
+        "discriminator" : {
+          "propertyName" : "type"
+        },
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "BASIC_API_KEY", "INTERMEDIATE_JWT", "INTERMEDIATE_CLIENT_CREDENTIAL", "ADVANCED_CODE_FLOW", "EVOLVED_CENTRALIZED_CLAIMS" ]
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "integrationId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "BooleanCustomProperty" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CustomProperty"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "value" : {
+              "type" : "boolean",
+              "description" : "The value of the custom property"
+            }
+          }
+        } ]
+      },
+      "CustomProperty" : {
+        "description" : "List of available custom properties of the plan.",
+        "discriminator" : {
+          "propertyName" : "type"
+        },
+        "properties" : {
+          "required" : {
+            "type" : "boolean",
+            "description" : "Whether the custom property is required"
+          },
+          "readOnly" : {
+            "type" : "boolean",
+            "description" : "Whether the custom property is read only"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "The description of the custom property"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "The type of the custom property",
+            "enum" : [ "STRING", "NUMBER", "BOOLEAN", "TEXT" ]
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "includeInSubscriptionWizard" : {
+            "type" : "boolean",
+            "description" : "Whether the custom property is included in the subscription wizard"
+          },
+          "display" : {
+            "type" : "string",
+            "description" : "The display name of the custom property"
+          }
+        }
+      },
+      "NumberCustomProperty" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CustomProperty"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "value" : {
+              "type" : "number",
+              "description" : "The value of the custom property"
+            }
+          }
+        } ]
+      },
+      "StringCustomProperty" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CustomProperty"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "value" : {
+              "type" : "string",
+              "description" : "The value of the custom property"
+            }
+          }
+        } ]
+      },
+      "Subscription" : {
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the subscription"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "The status of the subscription",
+            "enum" : [ "PENDING_PAYMENT", "PAYMENT_FAILED", "PENDING", "ACTIVE", "REJECTED", "CANCELLED", "EXPIRED" ]
+          },
+          "approvalEmailSent" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if an email has been sent to the approval group for this subscription"
+          },
+          "plan" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "team" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "expires" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "The date the subscription will expire"
+          },
+          "integrationId" : {
+            "type" : "string",
+            "description" : "Integration ID of the subscription in the API Gateway"
+          },
+          "auth" : {
+            "$ref" : "#/components/schemas/Auth"
+          },
+          "lastAuth" : {
+            "$ref" : "#/components/schemas/Auth"
+          },
+          "cancelled" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "The date the subscription was marked as cancelled"
+          },
+          "checkoutSession" : {
+            "type" : "string",
+            "description" : "Checkout session ID for the subscription, only used when the subscription is created through the checkout"
+          },
+          "stripeSubscriptionId" : {
+            "type" : "string",
+            "description" : "Integration ID of the subscription in the Monetization service provider"
+          },
+          "priceIds" : {
+            "type" : "array",
+            "description" : "The monetization service price IDs of the subscription",
+            "items" : {
+              "type" : "string",
+              "description" : "The monetization service price IDs of the subscription"
+            }
+          },
+          "usageMeter" : {
+            "type" : "string",
+            "description" : "The monetization service usage meter ID of the subscription"
+          },
+          "owner" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "The email of the subscription owner"
+          },
+          "customProperties" : {
+            "type" : "array",
+            "description" : "The custom properties of the subscription",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomProperty"
+            }
+          }
+        }
+      },
+      "TextCustomProperty" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CustomProperty"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "value" : {
+              "type" : "string",
+              "description" : "The value of the custom property"
+            }
+          }
+        } ]
+      },
+      "DocumentationVersion" : {
+        "properties" : {
+          "id" : {
+            "type" : "object"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "The order of the documentation in the list of documentation for the plan."
+          },
+          "version" : {
+            "type" : "string",
+            "description" : "The version of the documentation."
+          },
+          "status" : {
+            "type" : "array",
+            "description" : "The status of the documentation.",
+            "items" : {
+              "type" : "string",
+              "description" : "The status of the documentation."
+            }
+          },
+          "active" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if the documentation is active."
+          },
+          "visible" : {
+            "type" : "boolean",
+            "description" : "The visibility of the documentation."
+          },
+          "retrievalType" : {
+            "type" : "string",
+            "description" : "The retrieval type of the documentation.",
+            "enum" : [ "MANUAL", "GATEWAY", "CICD" ]
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL of the documentation."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the documentation."
+          },
+          "synced" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Timestamp of the last time the documentation was synchronized."
+          },
+          "planId" : {
+            "type" : "object",
+            "readOnly" : true
+          },
+          "planDocLevel" : {
+            "type" : "string",
+            "description" : "Documentation level of the documentation.",
+            "enum" : [ "PLAN", "API" ],
+            "readOnly" : true
+          },
+          "apiIntegrationId" : {
+            "type" : "string",
+            "description" : "Reference to the API if the documentation is bound to an API object.",
+            "readOnly" : true
+          }
+        }
+      },
+      "PlanDocDetails" : {
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "documentationLevel" : {
+            "type" : "string",
+            "enum" : [ "PLAN", "API" ]
+          },
+          "documentationPublic" : {
+            "type" : "boolean"
+          },
+          "planLevelDocs" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DocumentationVersion"
+            }
+          },
+          "apiLevelDocs" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DocumentationVersion"
+            }
+          }
+        }
+      },
+      "UploadFileResponse" : {
+        "properties" : {
+          "url" : {
+            "type" : "string"
+          }
+        }
+      },
+      "UserPatchObject" : {
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "type" : "string",
+            "enum" : [ "/email", "/givenName", "/familyName" ]
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TeamPatchObject" : {
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "type" : "string",
+            "enum" : [ "/name", "/internal" ]
+          },
+          "value" : {
+            "type" : "object"
+          }
+        }
+      },
+      "PatchObject" : {
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "description" : "Operation to perform on the path",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "type" : "string",
+            "description" : "Path to the field to be patched"
+          },
+          "value" : {
+            "type" : "object",
+            "description" : "Value to be patched"
+          }
+        }
+      },
+      "SubscriptionPatchObject" : {
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "type" : "string",
+            "enum" : [ "/name", "/expires", "/stripeSubscriptionId", "/priceIds", "/usageMeter", "/owner", "/email" ]
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "InvitationPatchObject" : {
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "type" : "string",
+            "enum" : [ "/expires", "/invitee", "/invitor", "/invitorEmail", "/accessDetails", "/team", "/status" ]
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Invitation" : {
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "invitorEmail" : {
+            "type" : "string",
+            "description" : "The email of the invitor"
+          },
+          "accessDetails" : {
+            "$ref" : "#/components/schemas/UserAccessDetails"
+          },
+          "team" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "The status of the invitation",
+            "enum" : [ "PENDING", "ACCEPTED", "ARCHIVED" ]
+          },
+          "expires" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "The expiration date of the invitation"
+          },
+          "invitee" : {
+            "type" : "string",
+            "description" : "The user that is invited"
+          },
+          "invitor" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          }
+        }
+      },
+      "CompanyPatchObject" : {
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "type" : "string",
+            "enum" : [ "/name", "/domain" ]
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Company" : {
+        "description" : "Company",
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "domain" : {
+            "type" : "string",
+            "description" : "The domain name of the company. e.g: \"example.com\""
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the company, defaults to the domain name of the company."
+          }
+        }
+      },
+      "Conf" : {
+        "description" : "Custom menu items for this product.",
+        "properties" : {
+          "general" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "object"
+            },
+            "properties" : {
+              "empty" : {
+                "type" : "boolean"
+              }
+            }
+          },
+          "authorized" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "object"
+            },
+            "properties" : {
+              "empty" : {
+                "type" : "boolean"
+              }
+            }
+          },
+          "monetization" : {
+            "$ref" : "#/components/schemas/MonetizationConf"
+          }
+        }
+      },
+      "Image" : {
+        "description" : "Reference to the image of the product",
+        "properties" : {
+          "url" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "width" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "height" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "MonetizationConf" : {
+        "properties" : {
+          "connected" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Product" : {
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "slug" : {
+            "type" : "string",
+            "description" : "The url slug of the product"
+          },
+          "marketings" : {
+            "type" : "array",
+            "description" : "List of marketing feature references for this product.",
+            "items" : {
+              "$ref" : "#/components/schemas/IdentifiableObjectId"
+            }
+          },
+          "testimonials" : {
+            "type" : "array",
+            "description" : "List of testimonials for this product.",
+            "items" : {
+              "$ref" : "#/components/schemas/Testimonial"
+            }
+          },
+          "menuItems" : {
+            "$ref" : "#/components/schemas/Conf"
+          },
+          "groupRefs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "description" : "Reference to an enterprise group that this product is associated with."
+            }
+          },
+          "productCategories" : {
+            "type" : "array",
+            "description" : "List of product categories that this product has been associated with.",
+            "items" : {
+              "$ref" : "#/components/schemas/IdentifiableObjectId"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the product"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "The short title of the product"
+          },
+          "visibility" : {
+            "type" : "string",
+            "description" : "The visibility of the product",
+            "enum" : [ "OPEN", "HIDDEN" ]
+          },
+          "audience" : {
+            "type" : "string",
+            "description" : "The audience of the product",
+            "enum" : [ "PUBLIC", "MANUAL", "INTERNAL" ]
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "The longer description of what this product is for"
+          },
+          "image" : {
+            "$ref" : "#/components/schemas/Image"
+          },
+          "active" : {
+            "type" : "boolean",
+            "description" : "Flag to indicate if the product is active"
+          }
+        }
+      },
+      "Testimonial" : {
+        "description" : "A testimonial for a product",
+        "properties" : {
+          "author" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "avatar" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NotFoundException" : {
+        "properties" : {
+          "cause" : {
+            "type" : "object",
+            "properties" : {
+              "stackTrace" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "classLoaderName" : {
+                      "type" : "string"
+                    },
+                    "moduleName" : {
+                      "type" : "string"
+                    },
+                    "moduleVersion" : {
+                      "type" : "string"
+                    },
+                    "methodName" : {
+                      "type" : "string"
+                    },
+                    "fileName" : {
+                      "type" : "string"
+                    },
+                    "lineNumber" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "nativeMethod" : {
+                      "type" : "boolean"
+                    },
+                    "className" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              },
+              "message" : {
+                "type" : "string"
+              },
+              "localizedMessage" : {
+                "type" : "string"
+              }
+            }
+          },
+          "stackTrace" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "classLoaderName" : {
+                  "type" : "string"
+                },
+                "moduleName" : {
+                  "type" : "string"
+                },
+                "moduleVersion" : {
+                  "type" : "string"
+                },
+                "methodName" : {
+                  "type" : "string"
+                },
+                "fileName" : {
+                  "type" : "string"
+                },
+                "lineNumber" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "nativeMethod" : {
+                  "type" : "boolean"
+                },
+                "className" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "suppressed" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "stackTrace" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "classLoaderName" : {
+                        "type" : "string"
+                      },
+                      "moduleName" : {
+                        "type" : "string"
+                      },
+                      "moduleVersion" : {
+                        "type" : "string"
+                      },
+                      "methodName" : {
+                        "type" : "string"
+                      },
+                      "fileName" : {
+                        "type" : "string"
+                      },
+                      "lineNumber" : {
+                        "type" : "integer",
+                        "format" : "int32"
+                      },
+                      "nativeMethod" : {
+                        "type" : "boolean"
+                      },
+                      "className" : {
+                        "type" : "string"
+                      }
+                    }
+                  }
+                },
+                "message" : {
+                  "type" : "string"
+                },
+                "localizedMessage" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "localizedMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Api" : {
+        "description" : "API item",
+        "discriminator" : {
+          "propertyName" : "type"
+        },
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "KONG", "AMAZON", "AMAZONEE", "AZURE", "APIGEE" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "resources" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource"
+            }
+          },
+          "integrationId" : {
+            "type" : "string"
+          },
+          "documentations" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DocumentationVersion"
+            }
+          },
+          "url" : {
+            "type" : "string"
+          },
+          "serviceIntegrationId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Criteria" : {
+        "discriminator" : {
+          "propertyName" : "key"
+        },
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          }
+        }
+      },
+      "FeatureExpanded" : {
+        "description" : "Reference to a feature identifier with value for this plan.",
+        "properties" : {
+          "ref" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LabelOverrides" : {
+        "properties" : {
+          "leadingText" : {
+            "type" : "string"
+          },
+          "mainText" : {
+            "type" : "string"
+          },
+          "trailingText" : {
+            "type" : "string"
+          },
+          "detailsTitle" : {
+            "type" : "string"
+          },
+          "detailsText" : {
+            "type" : "string"
+          },
+          "ctaOverrideText" : {
+            "type" : "string"
+          },
+          "ctaOverrideUrl" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MatchingCriteria" : {
+        "properties" : {
+          "api" : {
+            "type" : "string"
+          },
+          "criteria" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Criteria"
+            }
+          }
+        }
+      },
+      "Monetization" : {
+        "description" : "Monetization configuration for the plan. Used to define how the plan is billed.",
+        "properties" : {
+          "billProcessing" : {
+            "type" : "string",
+            "enum" : [ "API_CALL", "TOKEN", "CUSTOM" ]
+          },
+          "unitLabel" : {
+            "type" : "string"
+          },
+          "cycle" : {
+            "type" : "string",
+            "enum" : [ "MONTH", "YEAR", "MONTHLY", "YEARLY" ]
+          },
+          "revenueModel" : {
+            "type" : "string",
+            "enum" : [ "ONETIME", "RECURRING", "FLAT_FEE", "GRADUATED", "VOLUME", "FREE", "CONTRACT", "FLAT_FEE_OVERAGE" ]
+          },
+          "prices" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PlanPrice"
+            }
+          },
+          "defined" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "MonetizationVolumeTier" : {
+        "properties" : {
+          "min" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "max" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "perCall" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "flatFee" : {
+            "type" : "number",
+            "format" : "double"
+          }
+        }
+      },
+      "Plan" : {
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "object"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "The order of the plan in the list of plans for the product."
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "The status of the plan",
+            "enum" : [ "INACTIVE", "ACTIVE", "ARCHIVED" ]
+          },
+          "product" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "apis" : {
+            "type" : "array",
+            "description" : "List of APIs included in the plan.",
+            "items" : {
+              "$ref" : "#/components/schemas/Api"
+            }
+          },
+          "gateway" : {
+            "$ref" : "#/components/schemas/IdentifiableObjectId"
+          },
+          "integrationId" : {
+            "type" : "string",
+            "description" : "Integration ID of the plan in the gateway. Used to identify the plan in the gateway. For example, with Amazon API Gateway, this would be the Usage Plan ID."
+          },
+          "approvalGroupIdRef" : {
+            "type" : "string",
+            "description" : "The approval group ID reference for the plan."
+          },
+          "documentationLevel" : {
+            "type" : "string",
+            "description" : "The documentation level of the plan. Used to decide what level of documentation should be displayed on the portal.",
+            "enum" : [ "PLAN", "API" ]
+          },
+          "documentationPublic" : {
+            "type" : "boolean",
+            "description" : "Whether the documentation is public or not."
+          },
+          "documentations" : {
+            "type" : "array",
+            "description" : "List of documentation versions for the plan.",
+            "items" : {
+              "$ref" : "#/components/schemas/DocumentationVersion"
+            }
+          },
+          "features" : {
+            "type" : "array",
+            "description" : "List of feature references for the plan.",
+            "items" : {
+              "$ref" : "#/components/schemas/FeatureExpanded"
+            }
+          },
+          "duration" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "The duration of the plan in days."
+          },
+          "securityLevel" : {
+            "type" : "string",
+            "description" : "The security level authorization type of the plan.",
+            "enum" : [ "BASIC_API_KEY", "INTERMEDIATE_JWT", "INTERMEDIATE_CLIENT_CREDENTIAL", "ADVANCED_CODE_FLOW", "EVOLVED_CENTRALIZED_CLAIMS" ]
+          },
+          "enableUsageEvents" : {
+            "type" : "boolean",
+            "description" : "Flag to enable usage events for the plan."
+          },
+          "propertiesTabName" : {
+            "type" : "string",
+            "description" : "The name of the tab to display the properties of the plan."
+          },
+          "propertiesDescription" : {
+            "type" : "string",
+            "description" : "The description of the properties of the plan."
+          },
+          "customProperties" : {
+            "type" : "array",
+            "description" : "List of available custom properties of the plan.",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomProperty"
+            }
+          },
+          "numberOfAllowedSubscriptions" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "The number of allowed subscriptions allowed for the plan."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the plan"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "A brief, optional description of the plan to present to end user to help them select the correct plan."
+          },
+          "rateLimit" : {
+            "$ref" : "#/components/schemas/RateLimit"
+          },
+          "monetization" : {
+            "$ref" : "#/components/schemas/Monetization"
+          }
+        }
+      },
+      "PlanPrice" : {
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "currency" : {
+            "type" : "string"
+          },
+          "integrationId" : {
+            "type" : "string"
+          },
+          "overageIntegrationId" : {
+            "type" : "string"
+          },
+          "meterId" : {
+            "type" : "string"
+          },
+          "active" : {
+            "type" : "boolean"
+          },
+          "default" : {
+            "type" : "boolean"
+          },
+          "tiers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MonetizationVolumeTier"
+            }
+          },
+          "matchingCriteria" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MatchingCriteria"
+            }
+          },
+          "lookupKey" : {
+            "type" : "string"
+          },
+          "includesTax" : {
+            "type" : "boolean"
+          },
+          "labelOverrides" : {
+            "$ref" : "#/components/schemas/LabelOverrides"
+          }
+        }
+      },
+      "RateLimit" : {
+        "description" : "Rate-limiting configuration for the plan. Used to define how many requests can be made to the APIs included in a given time period.",
+        "discriminator" : {
+          "propertyName" : "type"
+        },
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "KONG", "AMAZON", "AMAZONEE", "AZURE", "APIGEE" ]
+          }
+        }
+      },
+      "Resource" : {
+        "properties" : {
+          "path" : {
+            "type" : "string"
+          },
+          "method" : {
+            "type" : "string"
+          },
+          "integrationId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Health" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "OK" ]
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "oauth-cc" : {
+        "type" : "oauth2",
+        "description" : "OAuth 2.0: Client Credentials",
+        "flows" : {
+          "clientCredentials" : {
+            "tokenUrl" : "https://developer.apiable.io/api/oauth2/token",
+            "scopes" : { }
+          }
+        },
+        "x-receive-token-in" : "request-body",
+        "x-client-id" : "",
+        "x-client-secret" : ""
+      }
+    }
+  }
+}
